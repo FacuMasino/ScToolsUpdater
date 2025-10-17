@@ -24,12 +24,13 @@ namespace ScToolsUpdater
 
         private void Login()
         {
-            chDrv.Url = "https://productores.sancristobal.com.ar/login";
+            chDrv.Url = "https://productores.sancristobal.com.ar/auth";
             chDrv.Navigate();
-            IWebElement inputUser = chDrv.FindElement(By.Id("field_username__input"));
-            IWebElement inputPass = chDrv.FindElement(By.Id("field_passwordHash__input"));
-            IWebElement btnLogin = chDrv.FindElement(By.Id("login"));
             WebDriverWait wait = new WebDriverWait(chDrv, TimeSpan.FromSeconds(15));
+            wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.Id("signInName")));
+            IWebElement inputUser = chDrv.FindElement(By.Id("signInName"));
+            IWebElement inputPass = chDrv.FindElement(By.Id("password"));
+            IWebElement btnLogin = chDrv.FindElement(By.Id("next"));
             wait.Until(d =>
             {
                 return inputUser.Displayed && inputPass.Displayed;
@@ -99,7 +100,7 @@ namespace ScToolsUpdater
 
         private async void Form1_Shown(object sender, EventArgs e)
         {
-            this.Hide(); // Ocultar por ahora
+            this.Hide(); // Ocultar form
             label1.Text = "Actualizando credenciales...";
             ChromeDriverService service = ChromeDriverService.CreateDefaultService();
             service.HideCommandPromptWindow = true;
